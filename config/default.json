@@ -1,3 +1,5 @@
 {
-    "mongoURI": "mongodb+srv://root:Igodlike182@cluster0-1lsmn.mongodb.net/test?retryWrites=true&w=majority"
+    "mongoURI": "mongodb+srv://root:3b5eAN2ZaYdYPYG0@cluster0-1lsmn.mongodb.net/test?retryWrites=true&w=majority",
+    
+    "jwtSecret" : "3b5eAN2ZaYd"
 }
