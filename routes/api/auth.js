@@ -7,6 +7,7 @@ const bcrypt = require("bcryptjs");
 const config = require("config");
 
 const User = require("../../models/User");
+
 // @route   GET api/auth
 // @desc    Test route
 // @access  Public
@@ -46,10 +47,10 @@ router.post(
       }
       const isMatch = await bcrypt.compare(password, user.password);
 
-      if(!isMatch){
+      if (!isMatch) {
         return res
-        .status(400)
-        .json({ errors: [{ msg: "Invalid Credetials" }] });
+          .status(400)
+          .json({ errors: [{ msg: "Invalid Credetials" }] });
       }
 
       const payload = {
