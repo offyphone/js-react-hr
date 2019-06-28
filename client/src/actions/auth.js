@@ -9,7 +9,8 @@ import {
   USER_LOADED,
   LOGIN_FAIL,
   LOGIN_SUCCESS,
-  LOGOUT
+  LOGOUT,
+  CLEAR_PROFILE
 } from "../actions/types";
 
 // Load User
@@ -71,8 +72,6 @@ export const login = (email, password) => async dispatch => {
 
   const body = JSON.stringify({ email, password });
   try {
-    console.log(body);
-
     const res = await axios.post("/api/auth", body, config);
     dispatch({
       type: LOGIN_SUCCESS,
@@ -94,6 +93,9 @@ export const login = (email, password) => async dispatch => {
 // Logout / Clear Profile
 
 export const logout = () => dispatch => {
+  dispatch({
+    type: CLEAR_PROFILE
+  });
   dispatch({
     type: LOGOUT
   });
