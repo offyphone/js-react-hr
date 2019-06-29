@@ -46,22 +46,19 @@ const EditProfile = ({
     getCurrentProfile();
 
     setFormData({
-      company: loading || !profile.msg.company ? "" : profile.msg.company,
-      website: loading || !profile.msg.website ? "" : profile.msg.website,
-      location: loading || !profile.msg.location ? "" : profile.msg.location,
-      status: loading || !profile.msg.status ? "" : profile.msg.status,
-      skills:
-        loading || !profile.msg.skills ? "" : profile.msg.skills.join(","),
+      company: loading || !profile.company ? "" : profile.company,
+      website: loading || !profile.website ? "" : profile.website,
+      location: loading || !profile.location ? "" : profile.location,
+      status: loading || !profile.status ? "" : profile.status,
+      skills: loading || !profile.skills ? "" : profile.skills.join(","),
       githubusername:
-        loading || !profile.msg.githubusername
-          ? ""
-          : profile.msg.githubusername,
-      bio: loading || !profile.msg.bio ? "" : profile.msg.bio,
-      twitter: loading || !profile.msg.twitter ? "" : profile.msg.twitter,
-      facebook: loading || !profile.msg.facebook ? "" : profile.msg.facebook,
-      vk: loading || !profile.msg.vk ? "" : profile.msg.vk,
-      youtube: loading || !profile.msg.youtube ? "" : profile.msg.youtube,
-      instagram: loading || !profile.msg.instagram ? "" : profile.msg.instagram
+        loading || !profile.githubusername ? "" : profile.githubusername,
+      bio: loading || !profile.bio ? "" : profile.bio,
+      twitter: loading || !profile.twitter ? "" : profile.twitter,
+      facebook: loading || !profile.facebook ? "" : profile.facebook,
+      vk: loading || !profile.vk ? "" : profile.vk,
+      youtube: loading || !profile.youtube ? "" : profile.youtube,
+      instagram: loading || !profile.instagram ? "" : profile.instagram
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading]);
