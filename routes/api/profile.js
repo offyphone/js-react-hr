@@ -8,6 +8,7 @@ const auth = require("../../middleware/auth");
 
 const Profile = require("../../models/Profile");
 const User = require("../../models/User");
+const Post = require("../../models/Post");
 
 // @route   GET api/profile/me
 // @desc    Get current users profile
@@ -23,7 +24,7 @@ router.get("/me", auth, async (req, res) => {
         .status(400)
         .json({ msg: "There is not profile for this user" });
     }
-    return res.status(200).json({ msg: profile });
+    return res.status(200).json(profile);
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");
@@ -151,7 +152,9 @@ router.get("/user/:user_id", async (req, res) => {
 // @access  Private
 router.delete("/", auth, async (req, res) => {
   try {
-    // @todo = remove users posts
+    // Remove user posts
+    await Post.deleteMany({ user: req.user.id });
+
     // Remove profile
     await Profile.findOneAndRemove({ user: req.user.id });
     await User.findOneAndRemove({ _id: req.user.id });

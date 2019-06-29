@@ -5,7 +5,10 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const config = require("config");
 const jwtSecret = config.get("jwtSecret");
+var cors = require("cors");
+var app = express();
 
+app.use(cors());
 const { check, validationResult } = require("express-validator");
 
 const User = require("../../models/User");
@@ -13,6 +16,7 @@ const User = require("../../models/User");
 // @route   POST api/users
 // @desc    Register user
 // @access  Public
+
 router.post(
   "/",
   [
@@ -25,12 +29,13 @@ router.post(
       "Please enter password with 6 or more characters"
     ).isLength({ min: 6 })
   ],
-  async (req, res) => {
+  async (req, res, next) => {
+    console.log(req.body);
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    console.log(req.body);
+
     const { name, email, password } = req.body;
     try {
       // See if user exists
@@ -72,6 +77,7 @@ router.post(
       );
       //res.send("User registered route");
     } catch (err) {
+      console.log(err);
       console.error(err.message);
       res.status(500).send("Server error");
     }
