@@ -13,7 +13,7 @@ import axios from "axios";
 
 import "./App.css";
 
-axios.defaults.baseURL = "http://offyghost.heroku:5000";
+//axios.defaults.baseURL = "http://offyghost.heroku:5000";
 //axios.defaults.baseURL = "http://localhost:5000";
 
 if (localStorage.token) {
