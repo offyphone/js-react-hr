@@ -1,3 +1,12 @@
+[DevConnector 2.0]
+This is student's project based on UDEMY course MERN Stack Front To Back: Full Stack React, Redux & Node.js
+At the moment its just blind copy, but with gaining skills it will being getting better due additional functionality.
+
+
+
+
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
