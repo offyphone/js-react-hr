@@ -2,7 +2,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
+import { connect } from "react-redux";
+
 const ProfileItem = ({
+  auth,
   profile: {
     user: { _id, name, avatar },
     status,
@@ -23,6 +26,25 @@ const ProfileItem = ({
         <Link to={`/profile/${_id}`} className="btn btn-primary">
           View Profile
         </Link>
+        {auth.isAuthenticated &&
+        auth.loading === false &&
+        auth.user._id === _id ? (
+          ""
+        ) : (
+          <p>
+            {" "}
+            <br />
+            <span>
+              <Link to={`/dialogs/${_id}`} className="btn btn-primary">
+                PM
+              </Link>
+
+              <Link to={`/friends/${_id}`} className="btn btn-primary">
+                Connect
+              </Link>
+            </span>
+          </p>
+        )}
       </div>
       <ul>
         {skills.slice(0, 4).map((skill, index) => (
@@ -40,4 +62,11 @@ ProfileItem.propTypes = {
   profile: PropTypes.object.isRequired
 };
 
-export default ProfileItem;
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
+export default connect(
+  mapStateToProps,
+  {}
+)(ProfileItem);

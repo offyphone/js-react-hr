@@ -23,13 +23,6 @@ import setAuthToken from "./utils/setAuthToken";
 
 import "./App.css";
 
-<<<<<<< Updated upstream
-import axios from "axios";
-
-axios.defaults.baseURL = "http://localhost:5000";
-
-=======
->>>>>>> Stashed changes
 if (localStorage.token) {
   setAuthToken(localStorage.token);
 }
@@ -49,8 +42,8 @@ const App = () => {
             <Switch>
               <Route exact path="/register" component={Register} />
               <Route exact path="/login" component={Login} />
-              <Route exact path="/profiles" component={Profiles} />
-              <Route exact path="/profile/:id" component={Profile} />
+              <PrivateRoute exact path="/profiles" component={Profiles} />
+              <PrivateRoute exact path="/profile/:id" component={Profile} />
               <PrivateRoute exact path="/dashboard" component={Dashboard} />
 
               <PrivateRoute

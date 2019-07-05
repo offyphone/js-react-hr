@@ -30,13 +30,11 @@ router.post(
 
     try {
       // Check for available Dialog
-      // TODO: getOrCreate Function
 
       // GetOrCreate DB for self and opposite
       const check = await Dialog.findById(req.params.dialogId);
-      console.log(check === null);
-      if (await !check) {
-        const newDialog = new Dialog({});
+      if (check === null) {
+        const newDialog = new Dialog({ _id: req.params.dialogId });
         await newDialog.save();
       }
 
@@ -68,7 +66,23 @@ router.post(
 // @access  Private [Access from both participiants of conversations]
 router.get("/:id", auth, async (req, res) => {
   try {
-    const messages = await Dialog.findById(req.params.id);
+    const check = await Dialog.find({
+      $OR: [
+        { users: [req.param.id, req.user.id] },
+        { users: [req.user.id, req.param.id] }
+      ]
+    });
+    if (check === null) {
+      const newDialog = new Dialog({ users: [req.param.id, req.user.id] });
+      await newDialog.save();
+    }
+
+    const messages = await Dialog.find({
+      $OR: [
+        { users: [req.param.id, req.user.id] },
+        { users: [req.user.id, req.param.id] }
+      ]
+    });
     res.json(messages);
   } catch (err) {
     console.error(err.message);
