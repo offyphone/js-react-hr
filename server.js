@@ -21,6 +21,7 @@ app.use("/api/users", require("./routes/api/users"));
 app.use("/api/auth", require("./routes/api/auth"));
 app.use("/api/posts", require("./routes/api/posts"));
 app.use("/api/profile", require("./routes/api/profile"));
+app.use("/api/dialogs", require("./routes/api/message"));
 
 // Serve statis assets in production
 if (process.env.NODE_ENV === "production") {

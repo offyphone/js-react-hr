@@ -13,9 +13,6 @@ import axios from "axios";
 
 import "./App.css";
 
-//axios.defaults.baseURL = "http://offyghost.heroku:5000";
-//axios.defaults.baseURL = "http://localhost:5000";
-
 if (localStorage.token) {
   setAuthToken(localStorage.token);
 }
@@ -29,6 +26,15 @@ const App = () => {
       <Router>
         <Fragment>
           <Navbar />
+          <Route exact path="/" component={Landing} />
+          <section className="container">
+            <Alert />
+            <Switch>
+              <Route exact path="/register" component={Register} />
+              <Route exact path="/login" component={Login} />
+              <PrivateRoute exact path="/profiles" component={Profiles} />
+              <PrivateRoute exact path="/profile/:id" component={Profile} />
+              <PrivateRoute exact path="/dashboard" component={Dashboard} />
 
           <Switch>
             <Route exact path="/" component={Landing} />
