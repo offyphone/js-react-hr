@@ -126,6 +126,14 @@ img {
   margin: 3rem 0;
 }
 
+.left-text{
+  text-align: left
+}
+
+.right-text{
+  text-align: right
+}
+
 .btn {
   display: inline-block;
   background: var(--light-color);

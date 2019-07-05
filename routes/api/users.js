@@ -50,13 +50,13 @@ router.post(
         r: "pg",
         d: "mm"
       });
-      console.log("GRAVATAR OK");
+      // console.log("GRAVATAR OK");
       user = new User({ name, email, avatar, password });
       // Encrypt password
       const salt = await bcrypt.genSalt(10);
       user.password = await bcrypt.hash(password, salt);
 
-      console.log("USER OK");
+      // console.log("USER OK");
       await user.save();
 
       // Return jsonwebtoken

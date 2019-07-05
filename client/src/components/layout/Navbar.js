@@ -9,12 +9,20 @@ const Navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
     <ul>
       <li>
         <Link to="/profiles">
+          <i className="fas fa-users" />
           <span className="hide-sm"> Sufferers</span>
         </Link>
       </li>
       <li>
         <Link to="/posts">
+          <i className="far fa-comment-alt" />
           <span className="hide-sm"> Posts</span>
+        </Link>
+      </li>
+      <li>
+        <Link to="/dialogs">
+          <i className="far fa-comment-alt" />
+          <span className="hide-sm"> Private Messages </span>
         </Link>
       </li>
       <li>
@@ -36,13 +44,16 @@ const Navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
     <ul>
       <li>
         <Link to="/profiles">
+          <i className="fas fa-users" />
           <span className="hide-sm"> Sufferers</span>
         </Link>
       </li>
       <li>
+        <i className="fas fa-registered" />
         <Link to="/register">Register</Link>
       </li>
       <li>
+        <i className="fas fa-sign-in-alt" />
         <Link to="/login">Log In</Link>
       </li>
     </ul>

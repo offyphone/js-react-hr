@@ -12,7 +12,7 @@ const Landing = ({ isAuthenticated }) => {
     <section className="landing">
       <div className="dark-overlay">
         <div className="landing-inner">
-          <h1 className="x-large">Sufferers Connector</h1>
+          <h1 className="x-large">Sufferers Social Network</h1>
           <p className="lead">
             All internet only for your personal troubles and all the readers
             only to took your life issues. Create a suffer profile/portfolio,

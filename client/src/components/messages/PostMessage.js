@@ -1,21 +1,22 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { addComment } from "../../actions/post";
+import { addMessage } from "../../actions/message";
 
-const CommentForm = ({ postId, addComment }) => {
+const PostMessage = ({ userIdTo, addMessage, dialogId }) => {
   const [text, setText] = useState("");
 
   return (
     <div className="post-form">
       <div className="bg-primary p">
-        <h3>Leave a Comment</h3>
+        <h3>Send a private message</h3>
       </div>
       <form
         className="form my-1"
         onSubmit={e => {
           e.preventDefault();
-          addComment(postId, { text });
+          console.log(`POST TO: ${userIdTo} IN DIALOG: ${dialogId}`);
+          addMessage(userIdTo, dialogId, { text });
           setText("");
         }}
       >
@@ -23,7 +24,7 @@ const CommentForm = ({ postId, addComment }) => {
           name="text"
           cols="30"
           rows="5"
-          placeholder="Create a post"
+          placeholder="Send a private message"
           value={text}
           onChange={e => setText(e.target.value)}
           required
@@ -34,11 +35,13 @@ const CommentForm = ({ postId, addComment }) => {
   );
 };
 
-CommentForm.propTypes = {
-  addComment: PropTypes.func.isRequired
+PostMessage.propTypes = {
+  addMessage: PropTypes.func.isRequired,
+  userIdTo: PropTypes.string.isRequired,
+  dialogId: PropTypes.string.isRequired
 };
 
 export default connect(
   null,
-  { addComment }
-)(CommentForm);
+  { addMessage }
+)(PostMessage);
