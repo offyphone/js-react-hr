@@ -8,7 +8,6 @@
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "concurrently": "^4.1.0",
     "config": "^3.1.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
@@ -20,6 +19,7 @@
     "request": "^2.88.0"
   },
   "devDependencies": {
+    "concurrently": "^4.1.1",
     "nodemon": "^1.19.1"
   },
   "scripts": {
@@ -38,6 +38,5 @@
   "bugs": {
     "url": "https://github.com/offyghost/js-react-hr/issues"
   },
-  "homepage": "https://github.com/offyghost/js-react-hr#readme",
-  "proxy": "http://localhost:5000"
+  "homepage": "https://github.com/offyghost/js-react-hr#readme"
 }
