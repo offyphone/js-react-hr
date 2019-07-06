@@ -29,15 +29,6 @@ router.post(
     }
 
     try {
-      // Check for available Dialog
-
-      // GetOrCreate DB for self and opposite
-      const check = await Dialog.findById(req.params.dialogId);
-      if (check === null) {
-        const newDialog = new Dialog({ _id: req.params.dialogId });
-        await newDialog.save();
-      }
-
       const dialog = await Dialog.findById(req.params.dialogId);
       console.log(dialog);
       //dialog.users.user.push(req.user.id);
@@ -66,23 +57,7 @@ router.post(
 // @access  Private [Access from both participiants of conversations]
 router.get("/:id", auth, async (req, res) => {
   try {
-    const check = await Dialog.find({
-      $OR: [
-        { users: [req.param.id, req.user.id] },
-        { users: [req.user.id, req.param.id] }
-      ]
-    });
-    if (check === null) {
-      const newDialog = new Dialog({ users: [req.param.id, req.user.id] });
-      await newDialog.save();
-    }
-
-    const messages = await Dialog.find({
-      $OR: [
-        { users: [req.param.id, req.user.id] },
-        { users: [req.user.id, req.param.id] }
-      ]
-    });
+    const messages = await Dialog.findById(req.params.id);
     res.json(messages);
   } catch (err) {
     console.error(err.message);
@@ -95,12 +70,47 @@ router.get("/:id", auth, async (req, res) => {
 // @access  Private
 router.get("/", auth, async (req, res) => {
   try {
-    // Get input and output dialogs
-    const dialogs = await Dialog.find({
-      $or: [{ to: req.user.id }, { from: req.user.id }]
-    }).select("-messages");
+    const userSelf = await User.findById(req.user.id);
+    // Get input and output dialogs only for self
 
+    const dialogs = await Dialog.find({ users: userSelf });
     res.json(dialogs);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+// @route   GET /api/dialogs/get-or-create/:id
+// @desc    Get or create dialog ID between two users
+// @access  Private
+router.get("/get-or-create/:id", auth, async (req, res) => {
+  try {
+    const userSelf = await User.findById(req.user.id);
+    const userTo = await User.findById(req.params.id);
+    //console.log(`self user : ${userSelf} msg to : ${userTo}`);
+
+    if (req.params.id && userSelf.email === userTo.email) {
+      return res.status(500).json({ msg: "You cant send msg to yourself" });
+    }
+
+    const check = await Dialog.findOne({
+      $or: [{ users: [userSelf, userTo] }, { users: [userTo, userSelf] }]
+    });
+
+    console.log(check);
+    if (check.length === 0) {
+      const newDialog = new Dialog({
+        users: [userSelf, userTo]
+      });
+      await newDialog.save();
+    }
+
+    const dialog = await Dialog.findOne({
+      $or: [{ users: [userSelf, userTo] }, { users: [userTo, userSelf] }]
+    });
+
+    res.json(dialog);
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");

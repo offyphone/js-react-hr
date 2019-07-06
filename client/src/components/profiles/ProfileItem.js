@@ -1,11 +1,12 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
-
+import axios from "axios";
 import { connect } from "react-redux";
 
 const ProfileItem = ({
   auth,
+  history,
   profile: {
     user: { _id, name, avatar },
     status,
@@ -31,25 +32,32 @@ const ProfileItem = ({
         auth.user._id === _id ? (
           ""
         ) : (
-          <p>
+          <div>
             {" "}
             <br />
             <span>
-              <Link to={`/dialogs/${_id}`} className="btn btn-primary">
+              <div
+                onClick={async e => {
+                  const link = await axios.get(
+                    `/api/dialogs/get-or-create/${_id}`
+                  );
+                  await history.push(`/dialogs/${link.data._id}`);
+                }}
+                className="btn btn-primary">
                 PM
-              </Link>
+              </div>
 
               <Link to={`/friends/${_id}`} className="btn btn-primary">
                 Connect
               </Link>
             </span>
-          </p>
+          </div>
         )}
       </div>
       <ul>
         {skills.slice(0, 4).map((skill, index) => (
           <li className="text-primary" key={skill.index}>
-            <i className="fas fa-check" />
+            <i className="fas fa-check" key={skill.index} />
             {skill}
           </li>
         ))}
@@ -69,4 +77,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   {}
-)(ProfileItem);
+)(withRouter(ProfileItem));

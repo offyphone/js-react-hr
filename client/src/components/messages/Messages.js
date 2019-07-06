@@ -33,9 +33,9 @@ const Messages = ({
               auth.user._id === message.to
                 ? "right-text my-1"
                 : "left-text my-1"
-            }
-          >
+            }>
             {" "}
+            SOME DIALOG{" "}
             <h5 className="post-date">
               <Moment key={"moment" + message._id} format="YYYY/MM/DD">
                 {message.date}

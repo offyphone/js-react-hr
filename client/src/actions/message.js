@@ -4,7 +4,7 @@ import { POST_ERROR, MESSAGE_SENT, GET_DIALOG, GET_DIALOGS } from "./types";
 // Get messages by id
 export const getDialog = id => async dispatch => {
   try {
-    // console.log(`/api/dialogs/${id}`);
+    console.log(`/api/dialogs/${id}`);
     const res = await axios.get(`/api/dialogs/${id}`);
     dispatch({
       type: GET_DIALOG,
