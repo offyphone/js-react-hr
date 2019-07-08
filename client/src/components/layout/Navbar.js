@@ -10,7 +10,13 @@ const Navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
       <li>
         <Link to="/profiles">
           <i className="fas fa-users" />
-          <span className="hide-sm"> Sufferers</span>
+          <span className="hide-sm"> Strangers</span>
+        </Link>
+      </li>
+      <li>
+        <Link to="/friends">
+          <i className="fas fa-users" />
+          <span className="hide-sm"> Friends?!</span>
         </Link>
       </li>
       <li>
@@ -45,7 +51,7 @@ const Navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
       <li>
         <Link to="/profiles">
           <i className="fas fa-users" />
-          <span className="hide-sm"> Sufferers</span>
+          <span className="hide-sm"> Strangers</span>
         </Link>
       </li>
       <li>
