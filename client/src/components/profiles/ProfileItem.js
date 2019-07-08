@@ -43,7 +43,8 @@ const ProfileItem = ({
                   );
                   await history.push(`/dialogs/${link.data._id}`);
                 }}
-                className="btn btn-primary">
+                className="btn btn-primary"
+              >
                 PM
               </div>
 
@@ -57,7 +58,7 @@ const ProfileItem = ({
       <ul>
         {skills.slice(0, 4).map((skill, index) => (
           <li className="text-primary" key={skill.index}>
-            <i className="fas fa-check" key={skill.index} />
+            <i className="fas fa-check" key={index * 4} />
             {skill}
           </li>
         ))}

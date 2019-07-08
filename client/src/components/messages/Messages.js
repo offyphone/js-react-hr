@@ -10,7 +10,7 @@ import { getDialog } from "../../actions/message";
 const Messages = ({
   getDialog,
   messageState: {
-    dialog: { to, messages },
+    dialog: { messages },
     loadingDialog
   },
   match,
@@ -20,33 +20,36 @@ const Messages = ({
     getDialog(match.params.id);
   }, [getDialog, match.params.id]);
 
+  // TODO slide chatbox to down
+
   return loadingDialog ? (
     <Spinner />
   ) : (
     <div>
-      {/* */}
-      {messages.map(message => (
-        <Fragment key={"fragment" + message._id}>
-          <div
-            key={message._id}
-            className={
-              auth.user._id === message.to
-                ? "right-text my-1"
-                : "left-text my-1"
-            }>
-            {" "}
-            SOME DIALOG{" "}
-            <h5 className="post-date">
-              <Moment key={"moment" + message._id} format="YYYY/MM/DD">
-                {message.date}
-              </Moment>
-            </h5>
-            {"      "}
-            {message.text}
-          </div>
-        </Fragment>
-      ))}
-      <PostMessage userIdTo={to} dialogId={match.params.id} />
+      <div className="chatbox">
+        {/* */}
+        {messages.map(message => (
+          <Fragment key={"fragment" + message._id}>
+            <div
+              key={message._id}
+              className={
+                auth.user._id === message.message.user
+                  ? "right-text my-1"
+                  : "left-text my-1"
+              }
+            >
+              <h5 className="post-date">
+                <Moment key={"moment" + message._id} format="YYYY/MM/DD">
+                  {message.date}
+                </Moment>
+              </h5>
+              {"      "}
+              {message.message.text}
+            </div>
+          </Fragment>
+        ))}
+      </div>
+      <PostMessage dialogId={match.params.id} />
     </div>
   );
 };

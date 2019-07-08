@@ -2,34 +2,28 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const DialogSchema = new Schema({
-  users: [
+  user: [
     {
       user: {
         type: Schema.Types.ObjectId,
-        ref: "users",
+        ref: "user",
         default: null
       }
     }
   ],
   messages: [
     {
-      from: {
+      message: {
         type: Schema.Types.ObjectId,
-        ref: "users",
-        required: true
-      },
-      date: {
-        type: Date,
-        default: Date.now()
-      },
-      text: {
-        type: String,
+        ref: "message",
         required: true
       }
     }
   ],
   last: {
-    type: String
+    type: Schema.Types.ObjectId,
+    ref: "message",
+    required: false
   }
 });
 

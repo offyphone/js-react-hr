@@ -4,12 +4,12 @@ const { check, validationResult } = require("express-validator");
 
 const auth = require("../../middleware/auth");
 const User = require("../../models/User");
-const Profile = require("../../models/Profile");
+const Message = require("../../models/Message");
 
 const Dialog = require("../../models/Dialog");
 
 // @route   POST api/dialogs/:id
-// @desc    Create dialog and message in dialog
+// @desc    Create message in dialog
 // @access  Private
 router.post(
   "/:dialogId",
@@ -29,21 +29,24 @@ router.post(
     }
 
     try {
-      const dialog = await Dialog.findById(req.params.dialogId);
-      console.log(dialog);
-      //dialog.users.user.push(req.user.id);
-
+      const dialog = await Dialog.findById(req.params.dialogId).populate(
+        "messages.message",
+        ["text", "user"]
+      );
+      const user = await User.findById(req.user.id)
+        .select("-password")
+        .select("-email");
       // Put a new message into dialog
-      const newMessage = {
-        from: req.user.id,
+      const newMessage = new Message({
+        user: user._id,
         text: req.body.text
-      };
-      //console.log(newMessage);
+      });
+      newMessage.save();
+      dialog.last = newMessage;
 
-      dialog.last = req.body.text;
-      //dialog.messages.push(newMessage);
-      //await dialog.save();
+      dialog.messages.push({ message: newMessage });
 
+      dialog.save();
       res.json(dialog);
     } catch (err) {
       console.error(err.message);
@@ -57,7 +60,15 @@ router.post(
 // @access  Private [Access from both participiants of conversations]
 router.get("/:id", auth, async (req, res) => {
   try {
-    const messages = await Dialog.findById(req.params.id);
+    const messages = await Dialog.findById(req.params.id)
+      .populate("user.user", ["name"])
+      .populate("messages.message", ["text", "user", "date"])
+      .populate({
+        path: "last",
+        populate: { path: "user" }
+      });
+
+    // TODO: hide the password hashcode!!!
     res.json(messages);
   } catch (err) {
     console.error(err.message);
@@ -73,7 +84,11 @@ router.get("/", auth, async (req, res) => {
     const userSelf = await User.findById(req.user.id);
     // Get input and output dialogs only for self
 
-    const dialogs = await Dialog.find({ users: userSelf });
+    const dialogs = await Dialog.find({ "user.user": userSelf })
+      .populate("user.user", ["name", "avatar"])
+      .populate("messages.message", ["text", "user"])
+      .populate("last", ["text"]);
+
     res.json(dialogs);
   } catch (err) {
     console.error(err.message);
@@ -82,7 +97,7 @@ router.get("/", auth, async (req, res) => {
 });
 
 // @route   GET /api/dialogs/get-or-create/:id
-// @desc    Get or create dialog ID between two users
+// @desc    Get or create dialog ID between two user
 // @access  Private
 router.get("/get-or-create/:id", auth, async (req, res) => {
   try {
@@ -95,20 +110,21 @@ router.get("/get-or-create/:id", auth, async (req, res) => {
     }
 
     const check = await Dialog.findOne({
-      $or: [{ users: [userSelf, userTo] }, { users: [userTo, userSelf] }]
+      $and: [{ "user.user": userSelf }, { "user.user": userTo }]
     });
 
     console.log(check);
-    if (check.length === 0) {
+
+    if (check === null || check.length === 0) {
       const newDialog = new Dialog({
-        users: [userSelf, userTo]
+        user: [{ user: userSelf }, { user: userTo }]
       });
       await newDialog.save();
     }
 
     const dialog = await Dialog.findOne({
-      $or: [{ users: [userSelf, userTo] }, { users: [userTo, userSelf] }]
-    });
+      $and: [{ "user.user": userSelf }, { "user.user": userTo }]
+    }).populate("user.user", ["name", "avatar"]);
 
     res.json(dialog);
   } catch (err) {
