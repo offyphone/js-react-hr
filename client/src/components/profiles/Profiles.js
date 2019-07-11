@@ -16,11 +16,11 @@ const Profiles = ({ getProfiles, profile: { profiles, loading } }) => {
         <Spinner />
       ) : (
         <Fragment>
-          <h1 className="large text-primary">Sufferrers</h1>
+          <h1 className="large text-primary">Strangers</h1>
 
           <p className="lead">
             <i className="fab fa-connectdevelop" /> Browse and connect with
-            Sufferrers
+            Strangers
           </p>
 
           <div className="profiles">
@@ -37,8 +37,9 @@ const Profiles = ({ getProfiles, profile: { profiles, loading } }) => {
     </Fragment>
   );
 };
+// <ProfileItem key={profile._id} profile={profile} />
 
-ProfileItem.propTypes = {
+Profiles.propTypes = {
   profile: PropTypes.object.isRequired
 };
 

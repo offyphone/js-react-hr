@@ -29,6 +29,18 @@ const ProfileSchema = new Schema({
   githubusername: {
     type: String
   },
+  friends: [
+    {
+      user: {
+        type: Schema.Types.ObjectId,
+        ref: "user"
+      },
+      mutual: {
+        type: Boolean,
+        default: false
+      }
+    }
+  ],
   experience: [
     {
       title: {

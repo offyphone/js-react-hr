@@ -126,12 +126,12 @@ img {
   margin: 3rem 0;
 }
 
-.left-text{
-  text-align: left
+.left-text {
+  text-align: left;
 }
 
-.right-text{
-  text-align: right
+.right-text {
+  text-align: right;
 }
 
 .btn {
@@ -496,12 +496,20 @@ button {
   margin-bottom: 0.5rem;
 }
 
+.chatbox {
+  overflow: scroll;
+  height: 460px;
+}
+
 /* Mobile Styles */
 @media (max-width: 700px) {
   .container {
     margin-top: 8rem;
   }
-
+  .chatbox {
+    overflow: scroll;
+    height: 300px;
+  }
   .hide-sm {
     display: none;
   }

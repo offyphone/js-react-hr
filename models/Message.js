@@ -2,14 +2,9 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const MessageSchema = new Schema({
-  from: {
+  user: {
     type: Schema.Types.ObjectId,
-    ref: "users",
-    required: true
-  },
-  to: {
-    type: Schema.Types.ObjectId,
-    ref: "users",
+    ref: "user",
     required: true
   },
   text: {
@@ -19,14 +14,6 @@ const MessageSchema = new Schema({
   date: {
     type: Date,
     default: Date.now
-  },
-  sent: {
-    type: Boolean,
-    default: false
-  },
-  read: {
-    type: Boolean,
-    default: false
   }
 });
 
