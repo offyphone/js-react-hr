@@ -43,8 +43,8 @@ const ProfileItem = ({ auth, profile }) => {
         )}
       </div>
       <ul>
-        {profile.skills.slice(0, 4).map((skill, index) => (
-          <li className="text-primary" key={index * 8}>
+        {skills.slice(0, 4).map((skill, index) => (
+          <li className="text-primary" key={skill.index}>
             <i className="fas fa-check" key={index * 4} />
             {skill}
           </li>
