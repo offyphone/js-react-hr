@@ -31,9 +31,9 @@ const ProfileSchema = new Schema({
   },
   friends: [
     {
-      profile: {
+      user: {
         type: Schema.Types.ObjectId,
-        ref: "profile"
+        ref: "user"
       },
       mutual: {
         type: Boolean,

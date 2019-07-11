@@ -10,6 +10,7 @@ import {
 const initialState = {
   profile: null,
   profiles: [],
+  friends: [],
   experiences: [],
   education: [],
   repos: [],
@@ -43,6 +44,7 @@ export default function(state = initialState, action) {
     case CLEAR_PROFILE:
       return {
         ...state,
+        friends: [],
         profile: null,
         repos: [],
         loading: false
