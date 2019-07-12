@@ -5,6 +5,7 @@ import profile from "./profile";
 import post from "./post";
 import message from "./message";
 import friend from "./friend";
+import job from "./job";
 
 export default combineReducers({
   alert,
@@ -12,5 +13,6 @@ export default combineReducers({
   profile,
   post,
   message,
-  friend
+  friend,
+  job
 });

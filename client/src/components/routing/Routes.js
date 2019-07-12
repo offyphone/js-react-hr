@@ -18,6 +18,7 @@ import Dialogs from "../messages/Dialogs";
 import Messages from "../messages/Messages";
 import Friends from "../friends/Friends";
 import Jobs from "../jobs/Jobs";
+import JobForm from "../jobs/JobForm";
 
 const Routes = () => {
   return (
@@ -29,6 +30,7 @@ const Routes = () => {
         <Route exact path="/profiles" component={Profiles} />
         <Route exact path="/profile/:id" component={Profile} />
         <Route exact path="/jobs" component={Jobs} />
+        <PrivateRoute exact path="/jobs/new" component={JobForm} />
         <PrivateRoute exact path="/dashboard" component={Dashboard} />
         <PrivateRoute exact path="/create-profile" component={CreateProfile} />
         <PrivateRoute exact path="/edit-profile" component={EditProfile} />

@@ -30,3 +30,7 @@ export const GET_FRIENDS = "GET_FRIENDS";
 export const SEND_FRIENDSHIP = "SEND_FRIENDSHIP";
 export const GET_MUTUAL_FRIENDS = "GET_MUTUAL_FRIENDS";
 export const CLEAR_FRIENDS = "CLEAR_FRIENDS";
+export const GET_JOBS = "GET_JOBS";
+export const GET_JOB = "GET_JOB";
+export const EDIT_JOB = "EDIT_JOB";
+export const DELETE_JOB = "DELETE_JOB";

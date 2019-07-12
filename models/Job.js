@@ -14,6 +14,9 @@ const JobSchema = new Schema({
     type: String,
     required: true
   },
+  location: {
+    type: String
+  },
   company: {
     type: String,
     required: true
