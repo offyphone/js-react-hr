@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import PostJob from "../jobs/PostJob";
 
 import { connect } from "react-redux";
-import { getJobs } from '../../actions/jobs'
+import { getJobs } from "../../actions/jobs";
 
 const Jobs = ({ auth }) => {
   useEffect(() => {
@@ -19,7 +19,7 @@ const Jobs = ({ auth }) => {
 };
 
 Jobs.propTypes = {
-  getJobs: PropTypes.func.isRequired,
+  getJobs: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
