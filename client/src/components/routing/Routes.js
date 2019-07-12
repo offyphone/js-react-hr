@@ -16,6 +16,9 @@ import NotFound from "../layout/NotFound";
 import PrivateRoute from "../routing/PrivateRoute";
 import Dialogs from "../messages/Dialogs";
 import Messages from "../messages/Messages";
+import Friends from "../friends/Friends";
+import Jobs from "../jobs/Jobs";
+import JobForm from "../jobs/JobForm";
 
 const Routes = () => {
   return (
@@ -26,6 +29,8 @@ const Routes = () => {
         <Route exact path="/login" component={Login} />
         <Route exact path="/profiles" component={Profiles} />
         <Route exact path="/profile/:id" component={Profile} />
+        <Route exact path="/jobs" component={Jobs} />
+        <PrivateRoute exact path="/jobs/new" component={JobForm} />
         <PrivateRoute exact path="/dashboard" component={Dashboard} />
         <PrivateRoute exact path="/create-profile" component={CreateProfile} />
         <PrivateRoute exact path="/edit-profile" component={EditProfile} />
@@ -33,6 +38,7 @@ const Routes = () => {
         <PrivateRoute exact path="/add-education" component={AddEducation} />
         <PrivateRoute exact path="/posts" component={Posts} />
         <PrivateRoute exact path="/posts/:id" component={Post} />
+        <PrivateRoute exact path="/friends" component={Friends} />
         <PrivateRoute exact path="/dialogs" component={Dialogs} />
         <PrivateRoute exact path="/dialogs/:id" component={Messages} />
         <Route component={NotFound} />

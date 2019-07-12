@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { addMessage } from "../../actions/message";
 
-const PostMessage = ({ userIdTo, addMessage, dialogId }) => {
+const PostMessage = ({ addMessage, dialogId }) => {
   const [text, setText] = useState("");
 
   return (
@@ -15,8 +15,7 @@ const PostMessage = ({ userIdTo, addMessage, dialogId }) => {
         className="form my-1"
         onSubmit={e => {
           e.preventDefault();
-          console.log(`POST TO: ${userIdTo} IN DIALOG: ${dialogId}`);
-          addMessage(userIdTo, dialogId, { text });
+          addMessage(dialogId, { text });
           setText("");
         }}
       >
@@ -37,7 +36,6 @@ const PostMessage = ({ userIdTo, addMessage, dialogId }) => {
 
 PostMessage.propTypes = {
   addMessage: PropTypes.func.isRequired,
-  userIdTo: PropTypes.string.isRequired,
   dialogId: PropTypes.string.isRequired
 };
 
