@@ -2,9 +2,10 @@ import axios from "axios";
 import { POST_ERROR, MESSAGE_SENT, GET_DIALOG, GET_DIALOGS } from "./types";
 
 // Get messages by id
+
 export const getDialog = id => async dispatch => {
   try {
-    console.log(`/api/dialogs/${id}`);
+    //console.log(`/api/dialogs/${id}`);
     const res = await axios.get(`/api/dialogs/${id}`);
     dispatch({
       type: GET_DIALOG,
@@ -19,7 +20,7 @@ export const getDialog = id => async dispatch => {
 };
 
 // Send message
-export const addMessage = (userIdTo, dialogId, formData) => async dispatch => {
+export const addMessage = (dialogId, formData) => async dispatch => {
   // console.log(`TO: ${id} formData: ${formData.text}`);
   const config = {
     headers: {
@@ -28,11 +29,7 @@ export const addMessage = (userIdTo, dialogId, formData) => async dispatch => {
   };
 
   try {
-    const res = await axios.post(
-      `/api/dialogs/${dialogId}/${userIdTo}`,
-      formData,
-      config
-    );
+    const res = await axios.post(`/api/dialogs/${dialogId}`, formData, config);
     dispatch({
       type: MESSAGE_SENT,
       payload: res.data
