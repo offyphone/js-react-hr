@@ -16,18 +16,21 @@ export default function(state = initialState, action) {
   switch (type) {
     case CLEAR_FRIENDS:
       return {
+        ...state,
         friends: [],
-        loading: true
+        loading: false
       };
     case GET_MUTUAL_FRIENDS:
     case GET_FRIENDS:
     case SEND_FRIENDSHIP:
       return {
+        ...state,
         friends: payload,
         loading: false
       };
     case REMOVE_FRIEND:
       return {
+        ...state,
         friends: payload,
         loading: false
       };

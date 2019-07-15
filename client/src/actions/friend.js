@@ -1,4 +1,6 @@
 import axios from "axios";
+import { setAlert } from "./alert";
+
 import {
   GET_FRIENDS,
   REMOVE_FRIEND,
@@ -60,6 +62,7 @@ export const addFriends = id => async dispatch => {
       type: SEND_FRIENDSHIP,
       payload: res.data
     });
+    dispatch(setAlert("Friend Request sent", "success"));
   } catch (err) {
     dispatch({
       type: POST_ERROR,
