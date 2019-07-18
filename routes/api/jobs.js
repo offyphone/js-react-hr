@@ -11,7 +11,7 @@ const { check, validationResult } = require("express-validator");
 // @access  Public
 router.get("/", async (req, res) => {
   try {
-    const job = await Job.find();
+    const job = await Job.find().select("-favorites -responses");
     res.json(job);
   } catch (err) {
     console.error(err.message);
@@ -24,7 +24,7 @@ router.get("/", async (req, res) => {
 // @access  Private
 router.get("/mine", auth, async (req, res) => {
   try {
-    const job = await Job.find({ user: req.user.id });
+    const job = await Job.find({ user: req.user.id }).select("-favorites");
     res.json(job);
   } catch (err) {
     console.error(err.message);
@@ -37,7 +37,9 @@ router.get("/mine", auth, async (req, res) => {
 // @access  Private
 router.get("/:id", auth, async (req, res) => {
   try {
-    const job = await Job.findById(req.params.id);
+    const job = await Job.findById(req.params.id).select(
+      "-favorites -responses"
+    );
     res.json(job);
   } catch (err) {
     console.error(err.message);
@@ -69,6 +71,7 @@ router.post(
     const {
       company,
       title,
+      location,
       salaryMin,
       salaryMax,
       description,
@@ -80,6 +83,7 @@ router.post(
     jobsFields.user = req.user.id;
     if (company) jobsFields.company = company;
     if (title) jobsFields.title = title;
+    if (location) jobsFields.location = location;
     if (salaryMin) jobsFields.salaryMin = salaryMin;
     if (salaryMax) jobsFields.salaryMax = salaryMax;
     if (description) jobsFields.description = description;
@@ -90,6 +94,7 @@ router.post(
       user: req.user.id,
       company: jobsFields.company,
       title: jobsFields.title,
+      location: jobsFields.location,
       salaryMin: jobsFields.salaryMin,
       salaryMax: jobsFields.salaryMax,
       description: jobsFields.description,
@@ -133,6 +138,7 @@ router.put(
       const {
         company,
         title,
+        location,
         salaryMin,
         salaryMax,
         description,
@@ -153,6 +159,7 @@ router.put(
 
       if (company) job.company = company;
       if (title) job.title = title;
+      if (location) job.location = location;
       if (salaryMin) job.salaryMin = salaryMin;
       if (salaryMax) job.salaryMax = salaryMax;
       if (description) job.description = description;
@@ -179,6 +186,159 @@ router.delete("/:id", auth, async (req, res) => {
     }
     job.delete();
     res.json(job);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ msg: "Server error" });
+  }
+});
+
+// @route   PUT api/jobs/favorite/:id
+// @desc    SET or UNSET favourite job to user
+// @access  Private
+router.put("/favorite/:id", auth, async (req, res) => {
+  try {
+    const job = await Job.findById(req.params.id);
+    const user = await User.findById(req.user.id);
+
+    let index = job.favorites.map(item => item._id).indexOf(user._id);
+    if (index >= 0) {
+      job.favorites.splice(index, 1);
+    } else {
+      job.favorites.push(user);
+    }
+    await job.save();
+    res.json({ job: job._id, type: Boolean(index + 1) });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ msg: "Server error" });
+  }
+});
+
+// @route   GET api/jobs/favorite/get/
+// @desc    GET favourite job to user
+// @access  Private
+router.get("/favorite/get/", auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    const job = await Job.find({ favorites: user }).select("_id");
+
+    res.json(job);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ msg: "Server error" });
+  }
+});
+
+// @route   PUT api/jobs/response/:id
+// @desc    SET or UNSET responses
+// @access  Private
+router.put("/response/:id", auth, async (req, res) => {
+  try {
+    const job = await Job.findById(req.params.id);
+    const profile = await Profile.findOne({ user: req.user.id }).select("_id");
+    if (profile === null) {
+      return res.status(500).json({ msg: "You should create profile first" });
+    }
+
+    if (req.user.id == job.user) {
+      return res
+        .status(500)
+        .json({ msg: "You can`t send response to vacancy from yourself" });
+    }
+    let index = job.responses
+      .map(profile => profile.profile)
+      .indexOf(profile._id);
+    let setOrUnset;
+    if (index === -1) {
+      setOrUnset = true;
+      job.responses.push({ profile: profile });
+    } else {
+      setOrUnset = false;
+      job.responses.splice(index, 1);
+    }
+    await job.save();
+    const jobToJson = await Job.find({ responses: profile });
+    res.json({ setOrUnset, job });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ msg: "Server error" });
+  }
+});
+
+// @route   PUT api/jobs/response/:id/accept/:profile_id
+// @desc    SET accept for job response
+// @access  Private
+router.put("/response/:id/accept/:profile_id", auth, async (req, res) => {
+  try {
+    const job = await Job.findById(req.params.id);
+
+    const profile = await Profile.findById(req.params.profile_id);
+
+    if (req.user.id !== job.user.toString()) {
+      return res
+        .status(500)
+        .json({ msg: "You can`t response  to foreign vacancies" });
+    }
+
+    let index = job.responses.map(item => item.profile).indexOf(profile._id);
+    job.responses[index].accept = !job.responses[index].accept;
+    job.responses[index].decline = false;
+    await job.save();
+    res.json(job);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ msg: "Server error" });
+  }
+});
+
+// @route   PUT api/jobs/response/:id/decline/:profile_id
+// @desc    SET decline for job response
+// @access  Private
+router.put("/response/:id/decline/:profile_id", auth, async (req, res) => {
+  try {
+    const job = await Job.findById(req.params.id);
+
+    const profile = await Profile.findById(req.params.profile_id);
+
+    if (req.user.id !== job.user.toString()) {
+      return res
+        .status(500)
+        .json({ msg: "You can`t response  to foreign vacancies" });
+    }
+
+    let index = job.responses.map(item => item.profile).indexOf(profile._id);
+    job.responses[index].decline = !job.responses[index].decline;
+    job.responses[index].accept = false;
+    await job.save();
+    res.json(job);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ msg: "Server error" });
+  }
+});
+
+// @route   GET api/jobs/response/all/
+// @desc    GET all current responses
+// @access  Private
+router.get("/response/all/", auth, async (req, res) => {
+  try {
+    const profile = await Profile.findOne({ user: req.user.id });
+
+    if (profile === null) {
+      return res.status(500).json({ msg: "You should create profile first" });
+    }
+    const job = await Job.find({ "responses.profile": profile }).select(
+      "-favorites"
+    );
+
+    // Kind of filter...
+    job.forEach(job => {
+      // not sure how to write this mush easy...
+      let index = job.responses.map(e => e.profile).indexOf(profile._id);
+      job.responses = job.responses[index];
+    });
+
+    await res.json(job);
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ msg: "Server error" });

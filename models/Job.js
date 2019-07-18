@@ -35,7 +35,34 @@ const JobSchema = new Schema({
   },
   special: {
     type: String
-  }
+  },
+  favorites: [
+    {
+      user: {
+        type: Schema.Types.ObjectId,
+        ref: "user"
+      }
+    }
+  ],
+  responses: [
+    {
+      profile: {
+        type: Schema.Types.ObjectId,
+        ref: "profile"
+      },
+      decline: {
+        type: Boolean,
+        default: false
+      },
+      accept: {
+        type: Boolean,
+        default: false
+      },
+      text: {
+        type: String
+      }
+    }
+  ]
 });
 
 module.exports = Message = mongoose.model("job", JobSchema);

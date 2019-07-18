@@ -23,23 +23,26 @@ const ProfileItem = ({ auth, profile }) => {
         <Link to={`/profile/${profile.user._id}`} className="btn btn-primary">
           View Profile
         </Link>
-        {auth.user !== null &&
-        profile !== null &&
-        auth.loading &&
-        auth.user._id === profile.user._id ? (
-          <Spinner />
+        {auth.user !== null ? (
+          profile !== null &&
+          auth.loading &&
+          auth.user._id === profile.user._id ? (
+            <Spinner />
+          ) : (
+            <div>
+              {" "}
+              <br />
+              <span>
+                {auth.user._id !== profile.user._id ? (
+                  <FriendButtons id={profile.user._id} />
+                ) : (
+                  ""
+                )}
+              </span>
+            </div>
+          )
         ) : (
-          <div>
-            {" "}
-            <br />
-            <span>
-              {auth.user._id !== profile.user._id ? (
-                <FriendButtons id={profile.user._id} />
-              ) : (
-                ""
-              )}
-            </span>
-          </div>
+          ""
         )}
       </div>
       <ul>

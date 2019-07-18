@@ -30,7 +30,15 @@ export const SEND_FRIENDSHIP = "SEND_FRIENDSHIP";
 export const GET_MUTUAL_FRIENDS = "GET_MUTUAL_FRIENDS";
 export const CLEAR_FRIENDS = "CLEAR_FRIENDS";
 export const GET_JOBS = "GET_JOBS";
+// For responses and get jobs by yourself
 export const GET_YOURS_JOBS = "GET_YOURS_JOBS";
 export const GET_JOB = "GET_JOB";
+export const CLEAR_JOB = "CLEAR_JOB";
 export const EDIT_JOB = "EDIT_JOB";
 export const DELETE_JOB = "DELETE_JOB";
+export const GET_FAVORITE = "GET_FAVORITE";
+export const TOGGLE_FAVORITE = "TOGGLE_FAVORITE";
+export const SET_FAVORITE = "SET_FAVORITE";
+export const UNSET_FAVORITE = "UNSET_FAVORITE";
+export const GET_RESPONSES = "GET_RESPONSES";
+export const PUT_RESPONSE = "PUT_RESPONSE";

@@ -1,14 +1,26 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-import { connect } from "react-redux";
-import { getJobs, getYoursJobs } from "../../actions/jobs";
+import PropTypes from "prop-types";
 
-const JobsButtonPanel = ({ getJobs, getYoursJobs }) => {
-  let [isShowedAllJobs, toggleJobShowing] = useState(false);
+import { connect } from "react-redux";
+import {
+  getJobs,
+  getYoursJobs,
+  getFavorite,
+  toggleFavorites
+} from "../../actions/jobs";
+
+const JobsButtonPanel = ({
+  getJobs,
+  getYoursJobs,
+  IsOnlyFavorites,
+  toggleFavorites
+}) => {
+  const [isShowedAllJobs, toggleJobShowing] = useState(false);
 
   return (
-    <div>
+    <div className="bg-white">
       <span>
         <button className="btn btn-info">
           <Link to="/add-job">Post a new vacancy </Link>
@@ -23,15 +35,33 @@ const JobsButtonPanel = ({ getJobs, getYoursJobs }) => {
         >
           Show {!isShowedAllJobs ? "only mine" : "all"} vacancies{" "}
         </button>{" "}
-        <button className="btn btn-black">Favourites</button>
+        <button
+          className={!IsOnlyFavorites ? "btn btn-white" : "btn btn-black"}
+          onClick={e => {
+            toggleFavorites(IsOnlyFavorites);
+          }}
+        >
+          {!IsOnlyFavorites ? "Favorites!" : "Show only favorites"}
+        </button>
+        <button className="btn btn-info">
+          <Link to="/responses">Get responses on your vacancies </Link>
+        </button>
       </span>
     </div>
   );
 };
 
-JobsButtonPanel.propTypes = {};
+JobsButtonPanel.propTypes = {
+  toggleFavorites: PropTypes.func.isRequired
+};
+
+const mapStateToProps = state => ({
+  jobs: state.job.jobs,
+  favorites: state.job.favorites,
+  IsOnlyFavorites: state.job.IsOnlyFavorites
+});
 
 export default connect(
-  null,
-  { getJobs, getYoursJobs }
+  mapStateToProps,
+  { getJobs, getYoursJobs, getFavorite, toggleFavorites }
 )(JobsButtonPanel);
