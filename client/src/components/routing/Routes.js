@@ -19,6 +19,7 @@ import Messages from "../messages/Messages";
 import Friends from "../friends/Friends";
 import Jobs from "../jobs/Jobs";
 import Job from "../jobs/Job";
+import JobResponses from "../jobs/JobResponses";
 import JobForm from "../jobs/JobForm";
 
 const Routes = () => {
@@ -44,6 +45,7 @@ const Routes = () => {
         <PrivateRoute exact path="/friends" component={Friends} />
         <PrivateRoute exact path="/dialogs" component={Dialogs} />
         <PrivateRoute exact path="/dialogs/:id" component={Messages} />
+        <PrivateRoute exact path="/responses" component={JobResponses} />
         <Route component={NotFound} />
       </Switch>
     </section>

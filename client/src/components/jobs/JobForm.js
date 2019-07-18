@@ -1,11 +1,14 @@
-import React, { useState, Fragment, useEffect, useCallback } from "react";
+import React, { useState, Fragment, useEffect } from "react";
 import { Link, withRouter } from "react-router-dom";
+import PropTypes from "prop-types";
+
 import { connect } from "react-redux";
-import { createJob, getJob } from "../../actions/jobs";
+import { createJob, getJob, editJob } from "../../actions/jobs";
 
 const JobForm = ({
   createJob,
   history,
+  editJob,
   match,
   getJob,
   job: { job, loading }
@@ -33,21 +36,17 @@ const JobForm = ({
   } = formData;
 
   useEffect(() => {
-    getJob(match.params.id);
-    console.log(job);
-    if (job !== null) {
-      setFormData({
-        company: job === null ? "" : job.company,
-        title: title === null ? "" : job.title,
-        location: location === null ? "" : job.location,
-        salaryMin: salaryMin === null ? "" : job.salaryMin,
-        salaryMax: salaryMax === null ? "" : job.salaryMax,
-        description: description === null ? "" : job.description,
-        reqs: reqs === null ? "" : job.reqs,
-        special: special === null ? "" : job.special
-      });
-    }
-  }, [loading]);
+    setFormData({
+      company: job === null ? "" : job.company,
+      title: job === null ? "" : job.title,
+      location: job === null ? "" : job.location,
+      salaryMin: job === null ? "" : job.salaryMin,
+      salaryMax: job === null ? "" : job.salaryMax,
+      description: job === null ? "" : job.description,
+      reqs: job === null ? "" : job.reqs,
+      special: job === null ? "" : job.special
+    });
+  }, [job]);
 
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -55,7 +54,7 @@ const JobForm = ({
   const onSubmit = e => {
     e.preventDefault();
     if (match.path.includes("edit-job")) {
-      //EDIT_JOB(id, formData, history);
+      editJob(match.params.id, formData, history);
     } else {
       createJob(formData, history);
     }
@@ -99,26 +98,40 @@ const JobForm = ({
             City & state suggested (eg. Boston, MA)
           </small>
         </div>
-        <div className="form-group">
-          <input
-            type="text"
-            placeholder="Minimum salary"
-            name="salaryMin"
-            value={salaryMin}
-            onChange={e => onChange(e)}
-          />
-          <small className="form-text">[Salary - min]</small>
-        </div>
-        <div className="form-group">
-          <input
-            type="text"
-            placeholder="Maximum salary"
-            name="salaryMax"
-            value={salaryMax}
-            onChange={e => onChange(e)}
-          />
-          <small className="form-text">[Salary - max]</small>
-        </div>
+        <table>
+          <tbody>
+            <tr>
+              <td>
+                <div className="form-group col">
+                  <input
+                    type="text"
+                    placeholder="Minimum salary"
+                    name="salaryMin"
+                    value={salaryMin}
+                    onChange={e => onChange(e)}
+                  />
+                </div>
+              </td>
+              <td>
+                <div> - </div>
+              </td>
+              <td>
+                <div className="form-group col">
+                  <input
+                    type="text"
+                    placeholder="Maximum salary"
+                    name="salaryMax"
+                    value={salaryMax}
+                    onChange={e => onChange(e)}
+                  />
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <small className="form-text">
+          Minimum and maximum value for salary
+        </small>
         <div className="form-group">
           <textarea
             placeholder="A full description for vacancy"
@@ -158,11 +171,18 @@ const JobForm = ({
   );
 };
 
+JobForm.propTypes = {
+  getJob: PropTypes.func.isRequired,
+  editJob: PropTypes.func.isRequired,
+  createJob: PropTypes.func.isRequired,
+  job: PropTypes.object.isRequired
+};
+
 const mapStateToProps = state => ({
   job: state.job
 });
 
 export default connect(
   mapStateToProps,
-  { createJob, getJob }
+  { createJob, getJob, editJob }
 )(withRouter(JobForm));

@@ -7,6 +7,7 @@ import Spinner from "../layout/Spinner";
 import DashoardActions from "./DashboardActions";
 import Experience from "./Experience";
 import Education from "./Education";
+import ProfileJobs from "./ProfileJobs";
 
 const Dashboard = ({
   getCurrentProfile,
@@ -27,6 +28,7 @@ const Dashboard = ({
       <i className="fas fa-user" /> Wellcome {user && user.name}
       {profile !== null ? (
         <Fragment>
+          <ProfileJobs />
           <DashoardActions />
           <Experience experience={profile.experience} />
           <Education education={profile.education} />
