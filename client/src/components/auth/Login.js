@@ -21,7 +21,8 @@ const Login = ({ login, isAuthenticated }) => {
   };
 
   if (isAuthenticated) {
-    return <Redirect to="/dashboard" />;
+    // usefull to debug
+    return <Redirect to="/responses" />;
   }
 
   return (

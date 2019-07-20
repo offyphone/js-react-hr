@@ -2,26 +2,34 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 
 import { connect } from "react-redux";
-import { getResponses } from "../../actions/jobs";
+import { getYoursJobs } from "../../actions/jobs";
 
-const JobResponses = ({ responses, getResponses }) => {
+import JobResponseItem from "./JobResponseItem";
+
+const JobResponses = ({ job: { jobs, loading }, getYoursJobs }) => {
   useState(() => {
-    getResponses();
-  }, [getResponses]);
+    getYoursJobs();
+  }, [getYoursJobs]);
 
-  return <div>There is job responses</div>;
+  return loading || jobs === null
+    ? "SPINNER"
+    : jobs.map(e => (
+        <>
+          <JobResponseItem job={e} key={e._id} />
+        </>
+      ));
 };
 
 JobResponses.propTypes = {
-  getResponses: PropTypes.func.isRequired,
-  responses: PropTypes.object.isRequired
+  getYoursJobs: PropTypes.func.isRequired,
+  job: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  responses: state.job.responses
+  job: state.job
 });
 
 export default connect(
   mapStateToProps,
-  {}
+  { getYoursJobs }
 )(JobResponses);

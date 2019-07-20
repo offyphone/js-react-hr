@@ -2,13 +2,16 @@ import {
   GET_JOBS,
   GET_YOURS_JOBS,
   GET_JOB,
+  LOGOUT,
   DELETE_JOB,
   CLEAR_JOB,
   GET_FAVORITE,
   SET_FAVORITE,
   GET_RESPONSES,
   PUT_RESPONSE,
-  TOGGLE_FAVORITE
+  TOGGLE_FAVORITE,
+  ACCEPT_RESPONSE,
+  DECLINE_RESPONSE
 } from "../actions/types";
 
 const initialState = {
@@ -25,6 +28,12 @@ const initialState = {
 export default function(state = initialState, action) {
   const { type, payload } = action;
   switch (type) {
+    case LOGOUT:
+      return {
+        loading: true,
+        responses: [],
+        favorites: []
+      };
     case TOGGLE_FAVORITE:
       return {
         ...state,
@@ -33,7 +42,8 @@ export default function(state = initialState, action) {
     case GET_RESPONSES:
       return {
         ...state,
-        responses: payload
+        responses: payload,
+        loading: false
       };
     case PUT_RESPONSE:
       return {
@@ -52,7 +62,6 @@ export default function(state = initialState, action) {
             : state.favorites.filter(e => e !== payload.job)
       };
     case GET_FAVORITE:
-      console.log(payload.map(e => e._id));
       return {
         ...state,
         favorites: payload.map(e => e._id)
@@ -60,7 +69,8 @@ export default function(state = initialState, action) {
     case CLEAR_JOB:
       return {
         ...state,
-        job: null
+        job: null,
+        jobs: []
       };
     case GET_JOBS:
       return {
@@ -87,6 +97,23 @@ export default function(state = initialState, action) {
         jobs: payload,
         loading: false,
         yours: true
+      };
+    }
+    case ACCEPT_RESPONSE: {
+      state.jobs.forEach(item => {
+        item.responses.forEach(e => {
+          if (e._id === payload._id) {
+            console.log(e.indexof(e._id));
+          }
+        });
+      });
+      return {
+        ...state
+      };
+    }
+    case DECLINE_RESPONSE: {
+      return {
+        ...state
       };
     }
     default:

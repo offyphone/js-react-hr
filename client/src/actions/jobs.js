@@ -13,7 +13,9 @@ import {
   SET_FAVORITE,
   GET_RESPONSES,
   PUT_RESPONSE,
-  TOGGLE_FAVORITE
+  TOGGLE_FAVORITE,
+  ACCEPT_RESPONSE,
+  DECLINE_RESPONSE
 } from "./types";
 
 export const createJob = (formData, history) => async dispatch => {
@@ -101,9 +103,14 @@ export const deleteJob = id => async dispatch => {
   }
 };
 
+// Get list of yours job to look who is being waiting job
 export const getYoursJobs = () => async dispatch => {
+  dispatch({
+    type: CLEAR_JOB
+  });
   try {
     const res = await axios.get("/api/jobs/mine");
+
     dispatch({
       type: GET_YOURS_JOBS,
       payload: res.data
@@ -169,6 +176,36 @@ export const putResponse = id => async dispatch => {
     const res = await axios.put(`/api/jobs/response/${id}`);
     dispatch({
       type: PUT_RESPONSE,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: POST_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+    console.error(err.message);
+  }
+};
+
+export const acceptResponse = id => async dispatch => {
+  try {
+    const res = await axios.put(`/api/jobs/response/${id}/accept/`);
+
+    dispatch({
+      type: ACCEPT_RESPONSE,
+      payload: res.data
+    });
+  } catch (err) {
+    console.error(err.message);
+  }
+};
+
+export const declineResponse = id => async dispatch => {
+  try {
+    const res = await axios.put(`/api/jobs/response/${id}/decline/`);
+
+    dispatch({
+      type: DECLINE_RESPONSE,
       payload: res.data
     });
   } catch (err) {
