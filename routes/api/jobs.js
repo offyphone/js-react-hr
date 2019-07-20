@@ -24,7 +24,14 @@ router.get("/", async (req, res) => {
 // @access  Private
 router.get("/mine", auth, async (req, res) => {
   try {
-    const job = await Job.find({ user: req.user.id }).select("-favorites");
+    const job = await Job.find({ user: req.user.id })
+      .select("-favorites")
+      .populate("responses.profile", "-friends ")
+      .populate({
+        path: "responses.profile",
+        populate: { path: "user" }
+      });
+
     res.json(job);
   } catch (err) {
     console.error(err.message);
@@ -257,7 +264,6 @@ router.put("/response/:id", auth, async (req, res) => {
       job.responses.splice(index, 1);
     }
     await job.save();
-    const jobToJson = await Job.find({ responses: profile });
     res.json({ setOrUnset, job });
   } catch (err) {
     console.error(err.message);
@@ -265,52 +271,51 @@ router.put("/response/:id", auth, async (req, res) => {
   }
 });
 
-// @route   PUT api/jobs/response/:id/accept/:profile_id
+// @route   PUT api/jobs/response/:id/accept/
 // @desc    SET accept for job response
 // @access  Private
-router.put("/response/:id/accept/:profile_id", auth, async (req, res) => {
+router.put("/response/:id/accept/", auth, async (req, res) => {
   try {
-    const job = await Job.findById(req.params.id);
+    const job = await Job.findOne({
+      responses: { $elemMatch: { _id: req.params.id } }
+    });
 
-    const profile = await Profile.findById(req.params.profile_id);
-
+    let index = job.responses.map(item => item._id).indexOf(req.params.id);
     if (req.user.id !== job.user.toString()) {
       return res
         .status(500)
         .json({ msg: "You can`t response  to foreign vacancies" });
     }
-
-    let index = job.responses.map(item => item.profile).indexOf(profile._id);
     job.responses[index].accept = !job.responses[index].accept;
     job.responses[index].decline = false;
     await job.save();
-    res.json(job);
+    res.json(job.responses[index]);
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ msg: "Server error" });
   }
 });
 
-// @route   PUT api/jobs/response/:id/decline/:profile_id
+// @route   PUT api/jobs/response/:id/decline/
 // @desc    SET decline for job response
 // @access  Private
-router.put("/response/:id/decline/:profile_id", auth, async (req, res) => {
+router.put("/response/:id/decline/", auth, async (req, res) => {
   try {
-    const job = await Job.findById(req.params.id);
+    const job = await Job.findOne({
+      responses: { $elemMatch: { _id: req.params.id } }
+    });
 
-    const profile = await Profile.findById(req.params.profile_id);
-
+    let index = job.responses.map(item => item._id).indexOf(req.params.id);
     if (req.user.id !== job.user.toString()) {
       return res
         .status(500)
         .json({ msg: "You can`t response  to foreign vacancies" });
     }
 
-    let index = job.responses.map(item => item.profile).indexOf(profile._id);
     job.responses[index].decline = !job.responses[index].decline;
     job.responses[index].accept = false;
     await job.save();
-    res.json(job);
+    res.json(job.responses[index]);
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ msg: "Server error" });

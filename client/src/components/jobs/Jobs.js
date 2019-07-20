@@ -11,15 +11,14 @@ import JobsButtonPanel from "./JobsButtonPanel";
 const Jobs = ({
   auth,
   getJobs,
-  job: { jobs, loading, favorites },
-  getResponses,
-  IsOnlyFavorites
+  job: { jobs, loading, favorites, IsOnlyFavorites, responses },
+  getResponses
 }) => {
   useEffect(() => {
     getJobs();
     getFavorite();
     getResponses();
-  }, [getJobs, getResponses]);
+  }, [getJobs, getResponses, loading]);
 
   return (
     <div>
@@ -60,9 +59,7 @@ Jobs.propTypes = {
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  job: state.job,
-  responses: state.job.responses,
-  IsOnlyFavorites: state.job.IsOnlyFavorites
+  job: state.job
 });
 
 export default connect(
