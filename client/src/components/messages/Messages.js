@@ -20,13 +20,13 @@ const Messages = ({
     getDialog(match.params.id);
   }, [getDialog, match.params.id]);
 
-  // TODO slide chatbox to down
+  // TODO slide chatroom to down
 
   return loadingDialog ? (
     <Spinner />
   ) : (
     <div>
-      <div className="chatbox">
+      <div className="chatroom">
         {/* */}
         {messages.map(message => (
           <Fragment key={"fragment" + message._id}>
@@ -36,10 +36,9 @@ const Messages = ({
                 auth.user._id === message.message.user
                   ? "right-text my-1"
                   : "left-text my-1"
-              }
-            >
+              }>
               <h5 className="post-date">
-                <Moment key={"moment" + message._id} format="YYYY/MM/DD">
+                <Moment key={"moment" + message._id} format="YYYY/MM/DD mm:ss">
                   {message.date}
                 </Moment>
               </h5>
