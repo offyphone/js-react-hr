@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { getCurrentProfile, deleteAccount } from "../../actions/profile";
 import Spinner from "../layout/Spinner";
-import DashoardActions from "./DashboardActions";
+import DashboardActions from "./DashboardActions";
 import Experience from "./Experience";
 import Education from "./Education";
 import ProfileJobs from "./ProfileJobs";
@@ -24,12 +24,12 @@ const Dashboard = ({
   ) : (
     <Fragment>
       {" "}
-      <h1 className="larget text-primary">Dashboard</h1>{" "}
-      <i className="fas fa-user" /> Wellcome {user && user.name}
+      <h1 className="large text-primary">Dashboard</h1>{" "}
+      <i className="fas fa-user" /> Welcome {user && user.name}
       {profile !== null ? (
         <Fragment>
           <ProfileJobs />
-          <DashoardActions />
+          <DashboardActions />
           <Experience experience={profile.experience} />
           <Education education={profile.education} />
           <div className="my-2">

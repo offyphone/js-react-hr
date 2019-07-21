@@ -154,12 +154,12 @@ const JobForm = ({
 
         <div className="form-group">
           <textarea
-            placeholder="Requimerents"
+            placeholder="Requirements"
             name="reqs"
             value={reqs}
             onChange={e => onChange(e)}
           />
-          <small className="form-text">Requimerents for vacancy</small>
+          <small className="form-text">Requirements for vacancy</small>
         </div>
 
         <input type="submit" className="btn btn-primary my-1" />

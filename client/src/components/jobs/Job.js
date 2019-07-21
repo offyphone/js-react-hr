@@ -18,7 +18,7 @@ const Job = ({ job: { job, loading }, getJob, match }) => {
       <div>
         {job.salaryMin} -{job.salaryMax}{" "}
       </div>
-      <div>{job.desciption}</div>
+      <div>{job.description}</div>
       <div>{job.reqs}</div>
       <div>{job.special}</div>{" "}
     </>

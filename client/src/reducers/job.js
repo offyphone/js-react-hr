@@ -103,7 +103,7 @@ export default function(state = initialState, action) {
       state.jobs.forEach(item => {
         item.responses.forEach(e => {
           if (e._id === payload._id) {
-            console.log(e.indexof(e._id));
+            console.log(e.indexOf(e._id));
           }
         });
       });
