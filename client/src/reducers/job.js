@@ -30,8 +30,13 @@ export default function(state = initialState, action) {
   switch (type) {
     case LOGOUT:
       return {
-        loading: true,
+        jobs: [],
+        jobs_tmp: [],
+        job: null,
+        IsOnlyFavorites: true,
         responses: [],
+        loading: true,
+        error: {},
         favorites: []
       };
     case TOGGLE_FAVORITE:
@@ -91,31 +96,38 @@ export default function(state = initialState, action) {
         job: payload,
         loading: false
       };
-    case GET_YOURS_JOBS: {
+    case GET_YOURS_JOBS:
       return {
         ...state,
         jobs: payload,
         loading: false,
         yours: true
       };
-    }
-    case ACCEPT_RESPONSE: {
-      state.jobs.forEach(item => {
-        item.responses.forEach(e => {
-          if (e._id === payload._id) {
-            console.log(e.indexOf(e._id));
-          }
-        });
+
+    case ACCEPT_RESPONSE:
+      state.jobs.forEach(job => {
+        let indexToChange = job.responses.map(e => e._id).indexOf(payload._id);
+        if (indexToChange >= 0) {
+          job.responses[indexToChange].accept = true;
+          job.responses[indexToChange].decline = false;
+        }
       });
       return {
         ...state
       };
-    }
-    case DECLINE_RESPONSE: {
+
+    case DECLINE_RESPONSE:
+      state.jobs.forEach(job => {
+        let indexToChange = job.responses.map(e => e._id).indexOf(payload._id);
+        if (indexToChange >= 0) {
+          job.responses[indexToChange].decline = true;
+          job.responses[indexToChange].accept = false;
+        }
+      });
       return {
         ...state
       };
-    }
+
     default:
       return state;
   }

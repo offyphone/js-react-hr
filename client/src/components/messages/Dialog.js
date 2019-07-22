@@ -34,7 +34,9 @@ const Dialog = ({ dialog, auth }) => {
               <tr>
                 <td />
                 <td>
-                  <p className="my-1">. . . {dialog.last.text}</p>
+                  <p className="my-1">
+                    . . . {dialog.last !== undefined ? dialog.last.text : ""}
+                  </p>
                 </td>
               </tr>
             </tbody>

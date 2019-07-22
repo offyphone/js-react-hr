@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
-
+import { Fragment } from "react-dom";
 import { connect } from "react-redux";
 import { getJobs, getFavorite, getResponses } from "../../actions/jobs";
 import JobItem from "./JobItem";
@@ -31,13 +31,13 @@ const Jobs = ({
         jobs.map(job =>
           IsOnlyFavorites ? (
             <>
-              <JobItemButtons job={job} />
+              <JobItemButtons job={job} key={job.title} />
               <JobItem job={job} key={job._id} />
             </>
           ) : favorites.includes(job._id) ? (
             <>
-              <JobItemButtons job={job} />
-              <JobItem job={job} key={job._id} />
+              <JobItemButtons job={job} key={job.title + 2} />
+              <JobItem job={job} key={job._id + 2} />
             </>
           ) : (
             ""

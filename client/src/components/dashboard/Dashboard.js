@@ -24,8 +24,8 @@ const Dashboard = ({
   ) : (
     <Fragment>
       {" "}
-      <h1 className="large text-primary">Dashboard</h1>{" "}
-      <i className="fas fa-user" /> Welcome {user && user.name}
+      <h1 className="larget text-primary">Dashboard</h1>{" "}
+      <i className="fas fa-user" /> Wellcome {user && user.name}
       {profile !== null ? (
         <Fragment>
           <ProfileJobs />

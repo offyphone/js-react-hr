@@ -10,7 +10,7 @@ import {
   CLEAR_FRIENDS
 } from "./types";
 
-// Get Friend list
+// Get Friendlist
 export const getFriends = () => async dispatch => {
   dispatch({
     type: CLEAR_FRIENDS

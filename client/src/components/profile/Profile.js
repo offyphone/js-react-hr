@@ -8,16 +8,22 @@ import ProfileAbout from "./ProfileAbout";
 import ProfileExperience from "./ProfileExperience.js";
 import ProfileEducation from "./ProfileEducation";
 import { getProfileById } from "../../actions/profile";
+import { getUserPosts } from "../../actions/post";
+import PostItem from "../posts/PostItem";
+import PostForm from "../posts/PostForm";
 
 const Profile = ({
   getProfileById,
+  getUserPosts,
+  post: { posts },
   profile: { profile, loading },
   auth,
   match
 }) => {
   useEffect(() => {
     getProfileById(match.params.id);
-  }, [match.params.id, getProfileById]);
+    getUserPosts(match.params.id);
+  }, [match.params.id, getProfileById, getUserPosts]);
   return (
     <Fragment>
       {profile === null || loading ? (
@@ -72,6 +78,21 @@ const Profile = ({
               )}
             </div>
           </div>
+
+          <Fragment>
+            {posts.length > 0
+              ? posts.map(item => <PostItem key={item._id} post={item} />)
+              : ""}
+          </Fragment>
+          <Fragment>
+            {auth.isAuthenticated &&
+            auth.loading === false &&
+            auth.user._id === profile.user._id ? (
+              <PostForm />
+            ) : (
+              ""
+            )}
+          </Fragment>
         </Fragment>
       )}
     </Fragment>
@@ -86,10 +107,11 @@ Profile.propTypes = {
 
 const mapStateToProps = state => ({
   profile: state.profile,
-  auth: state.auth
+  auth: state.auth,
+  post: state.post
 });
 
 export default connect(
   mapStateToProps,
-  { getProfileById }
+  { getProfileById, getUserPosts }
 )(Profile);

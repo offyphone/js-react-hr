@@ -12,10 +12,17 @@ const ProfileJobs = ({ getResponses, responses }) => {
 
   return (
     <div>
-      <Link to="/edit-profile" className="btn btn-dark">
-        <i className="fas fa-user-circle text-primary" /> Job responses{" "}
-        {responses === null ? "" : `[${responses.length}]`}
-      </Link>
+      {responses !== null && responses.length > 0 ? (
+        <Link to="/responses/pending" className="btn btn-white">
+          <i className="fas fa-user-circle text-primary" /> Job responses{" "}
+          {responses === null ? "" : `[${responses.length}]`}
+        </Link>
+      ) : (
+        <button className="btn btn-dark">
+          <i className="fas fa-user-circle text-primary" /> No job responses{" "}
+        </button>
+      )}
+
       {responses === null
         ? ""
         : `Accept: ${
