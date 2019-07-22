@@ -9,15 +9,13 @@ import JobResponseItem from "./JobResponseItem";
 const JobResponses = ({ job: { jobs, loading }, getYoursJobs }) => {
   useState(() => {
     getYoursJobs();
-  }, [getYoursJobs]);
+  }, [getYoursJobs, jobs]);
 
   return loading || jobs === null
     ? "SPINNER"
-    : jobs.map(e => (
-        <>
-          <JobResponseItem job={e} key={e._id} />
-        </>
-      ));
+    : jobs.length === 0
+    ? "On your jobs nobody have not sent responses"
+    : jobs.map(e => <JobResponseItem job={e} key={e._id} />);
 };
 
 JobResponses.propTypes = {

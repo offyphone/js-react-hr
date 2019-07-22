@@ -45,7 +45,7 @@ router.post(
       dialog.last = newMessage;
 
       dialog.messages.push({ message: newMessage });
-
+      dialog.last = newMessage;
       dialog.save();
       res.json(dialog);
     } catch (err) {

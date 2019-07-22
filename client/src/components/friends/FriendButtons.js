@@ -12,7 +12,7 @@ const FriendButtons = ({ id, history, addFriends }) => {
         <div
           onClick={async e => {
             const link = await axios.get(`/api/dialogs/get-or-create/${id}`);
-            await history.push(`/dialogs/${link.data.id}`);
+            await history.push(`/dialogs/${link.data._id}`);
           }}
           className="btn btn-primary"
         >

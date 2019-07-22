@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import JobResponse from "./JobResponse";
+import { connect } from "react-redux";
 
 const JobResponseItem = ({ job }) => {
   return (
@@ -33,7 +34,9 @@ const JobResponseItem = ({ job }) => {
       </div>
       <br />
       {job.responses !== undefined
-        ? job.responses.map(response => <JobResponse response={response} />)
+        ? job.responses.map(response => (
+            <JobResponse response={response} key={response._id} />
+          ))
         : "No responses yet..."}
     </div>
   );
@@ -43,4 +46,7 @@ JobResponseItem.propTypes = {
   job: PropTypes.object.isRequired
 };
 
-export default JobResponseItem;
+export default connect(
+  null,
+  {}
+)(JobResponseItem);

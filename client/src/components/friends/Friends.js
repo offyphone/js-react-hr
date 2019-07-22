@@ -19,7 +19,7 @@ const Friends = ({ getMutualFriends, friend: { friends, loading } }) => {
           <h1 className="large text-primary">Friends</h1>
 
           <p className="lead">
-            <i className="fab fa-connectdevelop" /> Your friend list(zone)
+            <i className="fab fa-connectdevelop" /> Your friendlist(zone)
           </p>
 
           <div className="profiles">
