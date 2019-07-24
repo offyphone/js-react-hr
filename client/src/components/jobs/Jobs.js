@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
-import { Fragment } from "react-dom";
 import { connect } from "react-redux";
 import { getJobs, getFavorite, getResponses } from "../../actions/jobs";
 import JobItem from "./JobItem";
 import JobItemButtons from "./JobItemButtons";
 import Spinner from "../layout/Spinner";
 import JobsButtonPanel from "./JobsButtonPanel";
+import { Typography } from "@material-ui/core";
 
 const Jobs = ({
   auth,
@@ -22,7 +22,7 @@ const Jobs = ({
 
   return (
     <div>
-      <h3 className="large text-primary">You can post any jobs for free!</h3>
+      <Typography variant="h3">You can post any jobs for free!</Typography>
       {auth.isAuthenticated ? <JobsButtonPanel /> : ""}
 
       {loading ? (
