@@ -57,7 +57,7 @@ router.post(
 
 // @route   GET api/dialogs/:id
 // @desc    Get all messages from dialog
-// @access  Private [Access from both participiants of conversations]
+// @access  Private [Access from both participants of conversations]
 router.get("/:id", auth, async (req, res) => {
   try {
     const messages = await Dialog.findById(req.params.id)
@@ -86,9 +86,14 @@ router.get("/", auth, async (req, res) => {
 
     const dialogs = await Dialog.find({ "user.user": userSelf })
       .populate("user.user", ["name", "avatar"])
-      .populate("messages.message", ["text", "user"])
-      .populate("last", ["text"]);
-
+      .populate("messages.message", ["text"])
+      .populate("last", ["text", "user"])
+      .populate({
+        path: "last",
+        populate: { path: "user" }
+      })
+      .select("-last.user.password");
+    // TODO : deselect -last.user.password
     res.json(dialogs);
   } catch (err) {
     console.error(err.message);

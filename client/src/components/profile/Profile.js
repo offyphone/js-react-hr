@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Spinner from "../layout/Spinner";
@@ -11,6 +11,7 @@ import { getProfileById } from "../../actions/profile";
 import { getUserPosts } from "../../actions/post";
 import PostItem from "../posts/PostItem";
 import PostForm from "../posts/PostForm";
+import Button from "@material-ui/core/Button";
 
 const Profile = ({
   getProfileById,
@@ -18,7 +19,8 @@ const Profile = ({
   post: { posts },
   profile: { profile, loading },
   auth,
-  match
+  match,
+  history
 }) => {
   useEffect(() => {
     getProfileById(match.params.id);
@@ -30,9 +32,13 @@ const Profile = ({
         <Spinner />
       ) : (
         <Fragment>
-          <Link to="/profiles" className="btn btn-light">
-            Back to profiles
-          </Link>
+          <Button
+            onClick={e => {
+              history.goBack();
+            }}
+          >
+            Back
+          </Button>
           {auth.isAuthenticated &&
           auth.loading === false &&
           auth.user._id === profile.user._id ? (
@@ -114,4 +120,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { getProfileById, getUserPosts }
-)(Profile);
+)(withRouter(Profile));

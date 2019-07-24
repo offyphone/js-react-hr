@@ -4,12 +4,14 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import { connect } from "react-redux";
+
 import {
   getJobs,
   getYoursJobs,
   getFavorite,
   toggleFavorites
 } from "../../actions/jobs";
+import { Grid, Button, Checkbox } from "@material-ui/core";
 
 const JobsButtonPanel = ({
   getJobs,
@@ -20,34 +22,63 @@ const JobsButtonPanel = ({
   const [isShowedAllJobs, toggleJobShowing] = useState(false);
 
   return (
-    <div className="bg-white">
-      <span>
-        <button className="btn btn-info">
-          <Link to="/add-job">Post a new vacancy </Link>
-        </button>
-        <button
-          type="button"
-          className="btn btn-info"
-          onClick={e => {
-            toggleJobShowing(!isShowedAllJobs);
-            isShowedAllJobs ? getJobs() : getYoursJobs();
-          }}
-        >
-          Show {!isShowedAllJobs ? "only mine" : "all"} vacancies{" "}
-        </button>{" "}
-        <button
-          className={!IsOnlyFavorites ? "btn btn-white" : "btn btn-black"}
-          onClick={e => {
-            toggleFavorites(IsOnlyFavorites);
-          }}
-        >
-          {!IsOnlyFavorites ? "Favorites!" : "Show only favorites"}
-        </button>
-        <button className="btn btn-info">
-          <Link to="/responses">Get responses on your vacancies </Link>
-        </button>
-      </span>
-    </div>
+    <Grid container direction="row" justify="center" alignItems="center">
+      <Grid
+        container
+        direction="row"
+        justify="center"
+        alignItems="center"
+        spacing={1}
+      >
+        <Grid item>
+          <Button className="btn btn-info" variant="outlined">
+            <Link to="/add-job">Add </Link>
+          </Button>
+        </Grid>
+
+        <Grid item>
+          <Button className="btn btn-info" variant="outlined">
+            <Link to="/responses">Job responses </Link>
+          </Button>
+        </Grid>
+      </Grid>
+      <Grid
+        container
+        direction="row"
+        justify="center"
+        alignItems="center"
+        spacing={1}
+      >
+        <Grid item>
+          <Checkbox
+            checked={isShowedAllJobs}
+            onChange={e => {
+              toggleJobShowing(!isShowedAllJobs);
+              isShowedAllJobs ? getJobs() : getYoursJobs();
+            }}
+            value="checkedA"
+            inputProps={{
+              "aria-label": "primary checkbox"
+            }}
+          />
+          Your Vacancies
+        </Grid>
+
+        <Grid item>
+          <Checkbox
+            checked={!IsOnlyFavorites}
+            onChange={e => {
+              toggleFavorites(IsOnlyFavorites);
+            }}
+            value="checkedA"
+            inputProps={{
+              "aria-label": "primary checkbox"
+            }}
+          />
+          Favorites
+        </Grid>
+      </Grid>
+    </Grid>
   );
 };
 

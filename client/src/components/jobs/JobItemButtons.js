@@ -2,12 +2,15 @@ import React from "react";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import Checkbox from "@material-ui/core/Checkbox";
+
 import {
   deleteJob,
   getJob,
   setFavorite,
   putResponse
 } from "../../actions/jobs";
+import { Grid, Button } from "@material-ui/core";
 
 const JobItemButtons = ({
   auth: { user, loading },
@@ -25,42 +28,49 @@ const JobItemButtons = ({
   return !isAuthenticated ? (
     " "
   ) : (
-    <div className="bg-white ">
-      <span>
-        {user._id !== job.user ? (
-          <>
-            <button
-              className={
-                responses.map(e => e._id).includes(job._id)
-                  ? "btn btn-white"
-                  : "btn btn-blue"
-              }
-              onClick={e => {
+    <Grid container direction="row" spacing={3} justify="space-evenly">
+      {user._id !== job.user ? (
+        <>
+          <Grid item>
+            <Checkbox
+              checked={responses.map(e => e._id).includes(job._id)}
+              onChange={e => {
                 putResponse(job._id);
               }}
-            >
-              {responses.map(e => e._id).includes(job._id)
-                ? "Response sent"
-                : "Response"}
-            </button>
-          </>
-        ) : (
-          ""
-        )}
-
-        <button
-          className={
-            !favorites.includes(job._id) ? "btn btn-black" : "btn btn-white"
-          }
-          onClick={e => {
+              value="checkedB"
+              color="primary"
+              inputProps={{
+                "aria-label": "secondary checkbox"
+              }}
+            />
+            {!responses.map(e => e._id).includes(job._id)
+              ? "Send resume"
+              : "Resume sent"}
+          </Grid>
+        </>
+      ) : (
+        ""
+      )}
+      <Grid item>
+        <Checkbox
+          checked={favorites.includes(job._id)}
+          onChange={e => {
             setFavorite(job._id);
           }}
-        >
-          {!favorites.includes(job._id) ? "Favorite" : "Del from Favorites"}
-        </button>
-        {user._id === job.user ? (
-          <>
-            <button
+          value="checkedB"
+          color="primary"
+          inputProps={{
+            "aria-label": "secondary checkbox"
+          }}
+        />
+        Favorite
+      </Grid>
+      {user._id === job.user ? (
+        <>
+          <Grid item>
+            <Button
+              color="primary"
+              variant="contained"
               className="btn btn-danger"
               onClick={e => {
                 getJob(job._id);
@@ -68,22 +78,25 @@ const JobItemButtons = ({
               }}
             >
               Edit
-            </button>
-
-            <button
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button
+              color="secondary"
+              variant="contained"
               className="btn btn-danger"
               onClick={e => {
                 deleteJob(job._id);
               }}
             >
               Delete
-            </button>
-          </>
-        ) : (
-          ""
-        )}
-      </span>
-    </div>
+            </Button>
+          </Grid>
+        </>
+      ) : (
+        ""
+      )}
+    </Grid>
   );
 };
 

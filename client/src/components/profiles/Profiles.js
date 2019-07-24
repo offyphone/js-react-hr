@@ -4,37 +4,50 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { getProfiles } from "../../actions/profile";
 import ProfileItem from "../../components/profiles/ProfileItem";
+import Grid from "@material-ui/core/Grid";
+import { Typography, Paper, makeStyles } from "@material-ui/core";
+
+const useStyles = makeStyles({
+  paper: {
+    minHeight: 360
+  },
+  alone: {
+    textAlign: "right"
+  }
+});
 
 const Profiles = ({ getProfiles, profile: { profiles, loading } }) => {
   useEffect(() => {
     getProfiles();
   }, [getProfiles]);
 
+  const classes = useStyles();
+
   return (
-    <Fragment>
+    <Paper className={classes.paper}>
       {loading ? (
         <Spinner />
       ) : (
         <Fragment>
-          <h1 className="large text-primary">Strangers</h1>
-
-          <p className="lead">
-            <i className="fab fa-connectdevelop" /> Browse and connect with
-            Strangers
-          </p>
-
-          <div className="profiles">
+          <Typography variant="h2">Strangers</Typography>
+          <Grid container spacing={3}>
             {profiles.length > 0 ? (
               profiles.map(profile => (
-                <ProfileItem key={profile._id} profile={profile} />
+                <Grid item xs key={profile._id}>
+                  <ProfileItem key={profile._id} profile={profile} />
+                </Grid>
               ))
             ) : (
-              <h4>No profiles found...</h4>
+              <Grid>
+                <Typography variant="h4" className={classes.alone}>
+                  No profiles found...
+                </Typography>
+              </Grid>
             )}
-          </div>
+          </Grid>
         </Fragment>
       )}
-    </Fragment>
+    </Paper>
   );
 };
 // <ProfileItem key={profile._id} profile={profile} />
